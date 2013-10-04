@@ -3,3 +3,35 @@
 	::
 	::	Set global defaults for core HTML objects
 	----------------------------------------------------------------------------- */
+
+*{
+	-moz-box-sizing:border-box; 
+	box-sizing: border-box;
+}
+
+#main{
+  background: $background;
+}
+
+ol, ul{
+  padding: 0;
+  li{
+    margin: .25rem 0 .25rem 1.5rem;
+  }
+}
+
+nav{
+  ul{
+    margin: 0;
+    li{
+      margin: 0;
+      display: inline-block;
+    }
+  }
+}
+
+img{
+  line-height: 1;
+  margin: 1rem 0 0;
+  width: 100%;
+}

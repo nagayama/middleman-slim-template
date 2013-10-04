@@ -3,3 +3,43 @@
 	::
 	::	Set global constants for colors, grids, breakpoints, etc.
 	----------------------------------------------------------------------------- */
+
+$dark-multiplier: 20%;
+
+$red: hsl(358, 69%, 46%);
+$orange: hsl(8, 73%, 46%);;
+$blue: hsl(200, 95%, 36%);
+$teal: hsl(180, 90%, 33%);
+$purple: hsl(293, 46%, 31%);
+$tan: hsl(26, 18%, 75%);
+
+$dark-red: shade($red, $dark-multiplier);
+$dark-orange: shade($orange, $dark-multiplier);
+$dark-blue: shade($blue, $dark-multiplier);
+$dark-teal: shade($teal, $dark-multiplier);
+$dark-purple: shade($purple, $dark-multiplier);
+
+$very-light-grey: rgba(0,0,0,.1);
+$light-grey: rgba(0,0,0,.2);
+$medium-grey: rgba(0,0,0,.5);
+$dark-grey: rgba(0,0,0,.7);
+$very-dark-grey: rgba(0,0,0,.9);
+$grey: rgba(150, 150, 150, 1);
+
+// Standard Content Colors
+$background: hsla(220, 15%, 97%, 1.0000); // Cool white
+$font-color: calcShade(74);
+$header-color: $font-color;
+$link-color: $red;
+
+
+$named-breakpoints:
+  "xxxs"  480px,
+  "xxs"   620px,
+  "xs"    780px,
+  "s"     860px,
+  "m"     1100px,
+  "l"     1300px,
+  "xl"    1500px,
+  "xxl"   1700px,
+  "xxxl"  2200px;

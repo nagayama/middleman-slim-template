@@ -3,9 +3,10 @@
 @import "_vendor/html5bp.css";
 
 //Frameworks
-@import "susy";
 
 //Global Helpers
+@import "_helper/helper-classes";
+@import "_helper/helper-functions";
 @import "_helper/helper-mixins";
 
 //Base

@@ -1,5 +1,5 @@
 #Markdown
-set :markdown_engine, :redcarpet
+# set :markdown_engine, :redcarpet
 
 #Slim
 require 'slim'
@@ -7,13 +7,10 @@ require 'slim'
 #Livereload
 activate :livereload
 
-###
-# Compass
-###
+set :css_dir, 'stylesheets'
+set :js_dir, 'javascripts'
+set :images_dir, 'images'
 
-# Susy grids in Compass
-# First: gem install susy
-require 'susy'
 
 # Change Compass configuration
 # compass_config do |config|
@@ -42,25 +39,7 @@ require 'susy'
 #   @which_fake_page = "Rendering a fake page with a variable"
 # end
 
-###
-# Helpers
-###
 
-# Automatic image dimensions on image_tag helper
-# activate :automatic_image_sizes
-
-# Methods defined in the helpers block are available in templates
-# helpers do
-#   def some_helper
-#     "Helping"
-#   end
-# end
-
-set :css_dir, 'stylesheets'
-
-set :js_dir, 'javascripts'
-
-set :images_dir, 'images'
 
 # Build-specific configuration
 configure :build do

@@ -3,3 +3,97 @@
 	::
 	::	Set global typography rules
 	----------------------------------------------------------------------------- */
+
+//Constants
+$base-size: 1rem;
+$font-ratio: 1.25;
+$sans-serif: 'Whitney A', 'Whitney B', "lucida sans", "gill sans", helvetica, arial, sans-serif;
+$serif: georgia, serif;
+
+//Calculated Constants
+$ms-5: ms(5, $base-size, $font-ratio);
+$ms-4: ms(4, $base-size, $font-ratio);
+$ms-3: ms(3, $base-size, $font-ratio);
+$ms-2: ms(2, $base-size, $font-ratio);
+$ms-1: ms(1, $base-size, $font-ratio);
+$ms-0: ms(0, $base-size, $font-ratio);
+$ms--1: ms(-1, $base-size, $font-ratio);
+
+//Global styles NEEDS REFACTOR
+html{
+	//Mobile first defaults
+	// font-family: $sans-serif;
+	font-family: $serif;
+	font-weight: normal;
+	font-style: normal;
+	color: $font-color;
+	
+	font-size: 13px;
+	@include responsive("font-size"
+		,14px 350px
+		,15px 520px
+		,16px 580px
+		,17px 630px
+		,18px 780px
+		,19px 840px
+		,20px 1030px
+		,21px 1450px
+		,22px 2200px
+		,23px 2450px
+	);
+
+	line-height: 1.55;
+	@include responsive("line-height"
+		,1.60 1400px
+		,1.65 2200px
+	);
+}
+
+// Use old style when available
+*{
+	@include old-style-figures;
+}
+
+//Reset type styles
+@include type{
+	margin: 1rem 0;
+	padding: 0;
+}
+
+//Init Body Type
+p, td, th{
+	font-size: 1rem;
+}
+
+@include headers{
+	font-family: $sans-serif;
+	font-weight: 300;
+}
+
+h1{
+	font-size: ms(5, $base-size, $font-ratio);
+}
+h2{
+	font-size: ms(4, $base-size, $font-ratio);
+}
+h3{
+	font-size: ms(3, $base-size, $font-ratio);
+}
+h4{
+	font-size: ms(2, $base-size, $font-ratio);
+}
+h5{
+	font-size: ms(1, $base-size, $font-ratio);
+}
+h6{
+	font-size: 1rem;
+}
+
+a{
+	text-decoration: none;
+	color: $link-color;
+}
+
+em{
+	font-style: italic;
+}

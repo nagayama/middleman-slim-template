@@ -3,3 +3,167 @@
 	::
 	::	Define global helper mixins.
 	----------------------------------------------------------------------------- */
+
+/*  -----------------------------------------------------------------------------
+	::  Responsive Helpers
+	----------------------------------------------------------------------------- */
+
+//Responsifies any single property across a range of named or numeric breakpoints
+@mixin responsive($property, $size-breakpoint-lists...){
+  $named-breakpoints: "xxs" 310px, "xs" 550px, "s" 770px, "m" 1180px, "l" 1420px, "xl" 1860px, "xxl" 2200px !default; 
+  
+	@each $size-breakpoint-list in $size-breakpoint-lists{
+		$value: nth($size-breakpoint-list, 1);
+		$breakpoint: nth($size-breakpoint-list, 2);
+
+    @if type-of($breakpoint) == number{
+      @media screen and (min-width: $breakpoint) {
+        #{$property}: #{$value};
+      }
+    }
+    // If using named breakpoint
+    @else{
+      $stringMatch: false;
+      @each $named-breakpoint in $named-breakpoints{
+        // If string match, apply property value pair at named breakpoint match
+        @if nth($named-breakpoint, 1) == $breakpoint{
+          $stringMatch: true;
+          @media screen and (min-width: nth($named-breakpoint, 2)) {
+            #{$property}: #{$value};
+          }
+        }
+      }
+      @if(stringMatch == false){
+        @warn "Couldn't find a named breakpoint: " + $breakpoint;
+      }
+    }
+	}
+}
+
+// Applies code at resolutions above a given breakpoint, based on a number or list of named breakpoints
+@mixin breakpoint($breakpoint){
+  $named-breakpoints: "xxs" 310px, "xs" 550px, "s" 770px, "m" 1180px, "l" 1420px, "xl" 1860px, "xxl" 2200px !default; 
+  
+  @if type-of($breakpoint) == number {
+    @media only screen and (min-width: $breakpoint) { @content; }
+  }
+  @else{
+    $stringMatch: false;
+    @each $named-breakpoint in $named-breakpoints{
+      // If string match
+      @if nth($named-breakpoint, 1) == $breakpoint{
+        $stringMatch: true;
+        @media only screen and (min-width: nth($named-breakpoint, 2)) { @content; }
+      }
+    }
+    @if($stringMatch == false){
+      @warn "Couldn't find a named breakpoint: " + $breakpoint;
+    }
+  }
+}
+
+//Implements responsive susy container, with grid padding adjusted across a variety of breakpoints
+@mixin responsiveContainer($grid-breakpoint-lists...){
+  //Mobile First
+  $default-pad: $grid-padding;
+  @include container; 
+  //Min-width based layouts
+  @each $grid-breakpoint-list in $grid-breakpoint-lists{
+    @each $grid-breakpoint in $grid-breakpoint-list{ 
+      $grid-padding: nth($grid-breakpoint, 1);
+      $breakpoint: nth($grid-breakpoint, 2);
+      @media screen and (min-width: $breakpoint) {
+        padding-left: $grid-padding;
+        padding-right: $grid-padding;
+      }
+    }
+  }
+  $grid-padding: $default-pad;
+}
+
+/*  -----------------------------------------------------------------------------
+  ::  Attach stylable block element Pseudo Classes to an object
+  ----------------------------------------------------------------------------- */
+
+@mixin before{
+  position: relative;
+  &:before{
+    content: "";
+    display: block;
+    position: absolute;
+    @content; 
+  }
+}
+
+@mixin after{
+  position: relative;
+  &:after{
+    content: "";
+    display: block;
+    position: absolute;
+    @content; 
+  }
+}
+
+
+/*  -----------------------------------------------------------------------------
+	::  SELECTOR SETS
+	----------------------------------------------------------------------------- */
+
+@mixin type{
+	h1, h2, h3, h4, h5, h6, p, td{
+		@content;
+	}
+}
+
+@mixin headers{
+	h1, h2, h3, h4, h5, h6{
+		@content;
+	}
+}
+
+@mixin bodyFont{
+	p, td, th{
+		@content;
+	}
+}
+
+/*  -----------------------------------------------------------------------------
+  ::  Color
+  ----------------------------------------------------------------------------- */
+
+// Applies a color overlay to a container
+@mixin overlay($color){
+  position: relative;
+  &:after{
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    background: $color;
+  }
+}
+
+@mixin clearfix{
+  &:after{
+    content:"";
+    display:table;
+    clear:both;
+  }
+}
+
+
+/*  -----------------------------------------------------------------------------
+  ::  Type
+  ----------------------------------------------------------------------------- */
+@mixin old-style-figures{
+  -moz-font-feature-settings: "onum=1, pnum=1"; 
+  -ms-font-feature-settings: "onum", "pnum";
+  -webkit-font-feature-settings: "onum", "pnum";
+  -o-font-feature-settings: "onum", "pnum";
+  font-feature-settings: "onum", "pnum";
+}
