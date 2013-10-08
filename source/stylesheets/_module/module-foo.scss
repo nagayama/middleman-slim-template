@@ -3,3 +3,58 @@
 	::
 	::	Set styles for component FOO
 	----------------------------------------------------------------------------- */
+
+#main{
+  padding: 5rem;
+}
+
+.container{
+  width: 80%;
+  margin: 0 auto;
+}
+
+#chart{
+  // height: 20rem;
+
+  border: 1px solid calcShade(15);
+  background: white;
+
+  svg{
+    // width: auto; 
+  }
+
+  h5{
+    margin: 0;
+    padding: .5rem;
+    border-bottom: 1px solid calcShade(20);
+    font-weight: 500;
+    color: black;
+    @include background-image(linear-gradient(calcShade(4), calcShade(6)));
+  }
+
+  .axis{
+    text{
+      fill: calcShade(65);
+      font-size: .7em;
+      font-family: $sans-serif;
+      text-anchor: start;
+    }
+    path, line{
+      fill: none;
+      stroke: calcShade(20);
+      shape-rendering: crispEdges;
+    }
+    &.y{
+      // Hide 0 Label
+      > g:first-child text{
+        display: none;
+      }
+    }
+    > path{
+    display: none;
+    }
+  }
+  .series path{
+    opacity: .7;
+  }
+}

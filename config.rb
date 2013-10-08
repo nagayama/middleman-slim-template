@@ -4,6 +4,9 @@
 #Slim
 require 'slim'
 
+#Compass
+require 'compass'
+
 #Livereload
 activate :livereload
 
