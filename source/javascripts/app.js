@@ -1,21 +1,24 @@
-var aspectRatio = 1 / 1.618
+var aspectRatio = 1 / 2
 
 // Fill container wdith
-containerWidth = $("#chart").width();
+containerWidth = $("#vis").width();
 containerHeight = containerWidth * aspectRatio;
 
 
 // Init SVG with margin convention
-var margin = {top: 0, right: 0, bottom: 36, left: 0},  //TODO: Explore methods for updating margins relatively in repaint cycle
+// TODO: Explore methods for updating margins relatively in repaint cycle
+var margin = {top: 0, right: 0, bottom: 36, left: 0},  
   width = containerWidth - margin.left - margin.right,
   height = containerHeight - margin.top - margin.bottom;
 
-var chartContainer = d3.select("#chart");
+var vis = d3.select("#vis");
 
-var header = chartContainer.append("h5")
+var header = vis.append("h6").classed("title", true)
     .text("Chart Title Placeholder");
 
-var svg = chartContainer.append("svg")
+var legend = vis.append("ul").classed("legend", true);
+
+var svg = vis.append("svg").classed("chart", true)
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
@@ -116,5 +119,20 @@ d3.json("datasets/stackedAreaData.json", function(error, data) {
       return area(d.values); 
     })
     .style("fill", function(d) { return color(d.name); });
+
+  // Draw legend
+  var legendListItems = legend.selectAll("li")
+    .data(data)
+    .enter()
+    .append("li");
+
+  legendListItems.append("span").classed("circle", true)
+    .style("background", function(d){
+      return color(d.name);
+    });
+
+  legendListItems.append("span").classed("text", true).text(function(d){
+    return d.name;
+  });
 
 });

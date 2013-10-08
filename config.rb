@@ -4,8 +4,9 @@
 #Slim
 require 'slim'
 
-#Compass
+#SASSY Bits
 require 'compass'
+require 'modular-scale'
 
 #Livereload
 activate :livereload
