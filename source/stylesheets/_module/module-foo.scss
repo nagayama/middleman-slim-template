@@ -13,6 +13,10 @@
   margin: 0 auto;
 }
 
+svg{
+  overflow: visible;
+}
+
 #vis{
   // height: 20rem;
 
@@ -62,6 +66,10 @@
   }
 
   .chart{
+    > svg{
+    }
+
+
     .axis{
       text{
         fill: calcShade(69);

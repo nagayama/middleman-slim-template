@@ -14,7 +14,7 @@ bs.stackedArea = function(el, data){
   var xAxis = d3.svg.axis()
     .orient("bottom")
     .tickFormat(formatX)
-    .tickPadding("10");
+    .tickPadding("10"); // TODO: set padding in EM space
 
   var yAxis = d3.svg.axis()
     .orient("left")
@@ -70,24 +70,36 @@ bs.stackedArea = function(el, data){
 
   var legend = container.append("ul").classed("legend", true);
 
-  var svg = container.append("svg").classed("chart", true);
-    
-  var canvas = svg.append("g")
+  var chart = container.append("div").classed("chart", true);
+
+  var marks = chart.append("svg").classed("marks", true);
+
+  var axes = chart.append("svg").classed("axes", true);
+
+  var gMarks = marks.append("g")
     .attr("class", "canvas");
 
-  var gxAxis = canvas.append("g")
+  var gAxes = axes.append("g")
+    .attr("class", "canvas");
+
+  var gxAxis = gAxes.append("g")
     .attr("class", "x axis");
 
-  var gyAxis = canvas.append("g")
+  var gyAxis = gAxes.append("g")
     .attr("class", "y axis");
 
-  var series = canvas.selectAll(".series")
+  var series = gMarks.selectAll(".series")
     .data(data)
     .enter().append("g")
     .attr("class", "series");
 
   var areas = series.append("path")
-    .attr("class", "area");
+    .attr("class", "area")
+    .attr("d", function(d) { 
+      return area(d.values); 
+    })
+    .style("fill", function(d) { return color(d.name); });
+
 
 
   // Render legend
@@ -127,6 +139,12 @@ bs.stackedArea = function(el, data){
 
 
     // Draw Axes
+    chart
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom) 
+    gAxes
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
     gxAxis
       .attr("transform", "translate(0," + height + ")")
       .call(xAxis);
@@ -144,21 +162,12 @@ bs.stackedArea = function(el, data){
       .style("text-anchor", "start");  
 
 
-    // Update cbart   TODO: separate marks layer from axis layer. Scale marks with viewbox, axis with js
-    svg
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      // .attr("preserveAspectRatio", "xMinYMin meet")
-      // .attr("viewBox", "0 0 " + (width + margin.left + margin.right) + " " + (height + margin.top + margin.bottom))
-    
-    canvas
+    // Update marks  TODO: only apply viewbox properties once. Split getting window props into seperate function
+    marks
+      .attr("preserveAspectRatio", "xMinYMin meet")
+      .attr("viewBox", "0 0 " + (width + margin.left + margin.right) + " " + (height + margin.top + margin.bottom))
+    gMarks
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    areas
-      .attr("d", function(d) { 
-        return area(d.values); 
-      })
-      .style("fill", function(d) { return color(d.name); });
 
     console.timeEnd("render");
 
@@ -166,7 +175,7 @@ bs.stackedArea = function(el, data){
 
   // Render and attach resize handler   TODO: debounce
   render.call();
-  d3.select(window).on("resize", render);
+  // d3.select(window).on("resize", render);
 
 };
 
