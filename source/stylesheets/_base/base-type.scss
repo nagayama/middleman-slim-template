@@ -28,19 +28,19 @@ html{
 	font-style: normal;
 	color: $font-color;
 	
-	font-size: 13px;
-	@include responsive("font-size"
-		,14px 350px
-		,15px 520px
-		,16px 580px
-		,17px 630px
-		,18px 780px
-		,19px 840px
-		,20px 1030px
-		,21px 1450px
-		,22px 2200px
-		,23px 2450px
-	);
+	font-size: 16px;
+	// @include responsive("font-size"
+	// 	,14px 350px
+	// 	,15px 520px
+	// 	,16px 580px
+	// 	,17px 630px
+	// 	,18px 780px
+	// 	,19px 840px
+	// 	,20px 1030px
+	// 	,21px 1450px
+	// 	,22px 2200px
+	// 	,23px 2450px
+	// );
 
 	line-height: 1.55;
 	@include responsive("line-height"

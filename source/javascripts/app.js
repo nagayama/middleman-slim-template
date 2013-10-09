@@ -21,6 +21,8 @@ var legend = vis.append("ul").classed("legend", true);
 var svg = vis.append("svg").classed("chart", true)
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
+    // .attr("preserveAspectRatio", "xMinYMin meet")
+    // .attr("viewBox", "0 0 " + (width + margin.left + margin.right) + " " + (height + margin.top + margin.bottom))
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -44,7 +46,7 @@ var yAxis = d3.svg.axis()
   .scale(y)
   .orient("left")
   .tickFormat(formatY)
-  .ticks(10) // TODO: Get smart about number of ticks
+  .ticks(6) // TODO: Get smart about number of ticks
   .innerTickSize(-width);
 
 // Mark generators
