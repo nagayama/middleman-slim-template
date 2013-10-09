@@ -73,7 +73,8 @@
         vector-effect: non-scaling-stroke;
         fill: none;
         stroke: calcShade(13);
-        shape-rendering: crispEdges;
+        // stroke-width: 1;
+        // shape-rendering: crispEdges;
       }
       &.y{
         // Hide 0 Label

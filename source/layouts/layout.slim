@@ -21,13 +21,12 @@ html
       window.jQuery || document.write('<script src="javascripts/vendor/jquery-1.10.2.min.js"><\/script>')
 
     == javascript_include_tag "vendor/d3"
-    == javascript_include_tag"vendor/nv.d3"
 
     // Concatenated JS
     == javascript_include_tag "app"
 
-    //Area chart js
-
+    // NVD3
+    / == javascript_include_tag"vendor/nv.d3"
     / == javascript_include_tag "vendor/nv.d3.legend"
     / == javascript_include_tag "vendor/nv.d3.scatter"
     / == javascript_include_tag "vendor/nv.d3.stackedArea"

@@ -1,7 +1,7 @@
 module SiteHelpers
 
   def page_title
-    title = "Set your site title in /helpers/site_helpers.rb"
+    title = "Bugsnag D3"
     if data.page.title
       title << " | " + data.page.title
     end
