@@ -22,7 +22,7 @@ bs.stackedArea = function(el, data){
     .ticks(6) // TODO: Get smart about number of ticks  
 
   
-  // Init mark generators
+  // Mark generators
   var area = d3.svg.area()  // Area generator accesses y and y0 properties attached from stack generator
     .x(function(d) { return x(new Date(d[0]) ); 
     })
@@ -70,7 +70,7 @@ bs.stackedArea = function(el, data){
 
   var legend = container.append("ul").classed("legend", true);
 
-  var chart = container.append("div").classed("chart", true);
+  var chart = container.append("svg").classed("chart", true);
 
   var marks = chart.append("svg").classed("marks", true);
 
@@ -93,14 +93,6 @@ bs.stackedArea = function(el, data){
     .enter().append("g")
     .attr("class", "series");
 
-  var areas = series.append("path")
-    .attr("class", "area")
-    .attr("d", function(d) { 
-      return area(d.values); 
-    })
-    .style("fill", function(d) { return color(d.name); });
-
-
 
   // Render legend
   var legendListItems = legend.selectAll("li")
@@ -116,6 +108,7 @@ bs.stackedArea = function(el, data){
   legendListItems.append("span").classed("text", true).text(function(d){
     return d.name;
   });
+
 
   var render = function(){
 
@@ -139,9 +132,9 @@ bs.stackedArea = function(el, data){
 
 
     // Draw Axes
-    chart
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom) 
+    // chart
+      // .attr("width", width + margin.left + margin.right)
+      // .attr("height", height + margin.top + margin.bottom) 
     gAxes
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -159,23 +152,45 @@ bs.stackedArea = function(el, data){
     gyAxis.selectAll("text")
       .attr("dx", "1em")
       .attr("dy", "1.25em")
-      .style("text-anchor", "start");  
+      .style("text-anchor", "start"); 
+
+
+    chart
+      .style({
+        'width'   : width,
+        'height'  : containerHeight
+      });
+      // .style("width", width) 
+      // .style("height", height);
 
 
     // Update marks  TODO: only apply viewbox properties once. Split getting window props into seperate function
-    marks
-      .attr("preserveAspectRatio", "xMinYMin meet")
-      .attr("viewBox", "0 0 " + (width + margin.left + margin.right) + " " + (height + margin.top + margin.bottom))
-    gMarks
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    if(renderCount == 0){
+      marks
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", "0 0 " + (width + margin.left + margin.right) + " " + (height + margin.top + margin.bottom))
+      gMarks
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  
+      var areas = series.append("path")
+        .attr("class", "area")
+        .attr("d", function(d) { 
+          return area(d.values); 
+        })
+        .style("fill", function(d) { return color(d.name); });       
+
+    }
+    renderCount++;
+
 
     console.timeEnd("render");
-
   }
 
   // Render and attach resize handler   TODO: debounce
+  var renderCount = 0;
   render.call();
-  // d3.select(window).on("resize", render);
+  d3.select(window).on("resize", render);
 
 };
 

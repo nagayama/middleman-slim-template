@@ -4,6 +4,11 @@
 	::	Set styles for component FOO
 	----------------------------------------------------------------------------- */
 
+html {
+  overflow-y: scroll;
+}
+
+
 #main{
   padding: 5rem;
 }
@@ -66,10 +71,12 @@ svg{
   }
 
   .chart{
-    > svg{
-    }
-
-
+    // position: relative;
+    // > svg{
+    //   position: absolute;
+    //   top: 0;
+    //   left: 0;
+    // }
     .axis{
       text{
         fill: calcShade(69);
