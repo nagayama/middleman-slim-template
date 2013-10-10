@@ -72,23 +72,21 @@ bs.stackedArea = function(el, data){
 
   var chart = container.append("svg").classed("chart", true);
 
-  var marks = chart.append("svg").classed("marks", true);
+  var axes = chart.append("svg")
+    .attr("class", "axes");
 
-  var axes = chart.append("svg").classed("axes", true);
-
-  var gMarks = marks.append("g")
-    .attr("class", "canvas");
-
-  var gAxes = axes.append("g")
-    .attr("class", "canvas");
-
-  var gxAxis = gAxes.append("g")
+  var gxAxis = axes.append("g")
     .attr("class", "x axis");
 
-  var gyAxis = gAxes.append("g")
-    .attr("class", "y axis");
+  var gyAxis = axes.append("g")
+    .attr("class", "y axis");  
 
-  var series = gMarks.selectAll(".series")
+  var marks = chart.append("svg").classed("marks", true);
+
+  var marksView = marks.append("svg")
+    .attr("class", "viewbox");
+
+  var series = marksView.selectAll(".series")
     .data(data)
     .enter().append("g")
     .attr("class", "series");
@@ -115,12 +113,14 @@ bs.stackedArea = function(el, data){
     console.time("render");
 
     // Calculate current dimensions
-    var containerWidth = el.width(),
-        containerHeight = containerWidth * aspectRatio,
-        margin = {top: 0, right: 0, bottom: 36, left: 0},  // TODO: set margins in EM space
+    var margin = {top: -3, right: 0, bottom: 36, left: 0},  // TODO: set margins in EM space
+        containerWidth = el.width(),
         width = containerWidth - margin.left - margin.right,
-        height = containerHeight - margin.top - margin.bottom;
+        height = width * aspectRatio,
+        containerHeight = height + margin.top + margin.bottom;
 
+    chart
+      .style('height', containerHeight);
     
     // Update ranges and axis generators
     x.range([0, width]);
@@ -130,13 +130,15 @@ bs.stackedArea = function(el, data){
       .scale(y)
       .innerTickSize(-width);
 
-
     // Draw Axes
-    // chart
-      // .attr("width", width + margin.left + margin.right)
-      // .attr("height", height + margin.top + margin.bottom) 
-    gAxes
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    axes
+      .attr("x", margin.left)
+      .attr("y", margin.top)
+      .attr("width", width);
+    marks
+      .attr("x", margin.left)
+      .attr("y", margin.top)
+      .attr("width", width);
 
     gxAxis
       .attr("transform", "translate(0," + height + ")")
@@ -155,23 +157,12 @@ bs.stackedArea = function(el, data){
       .style("text-anchor", "start"); 
 
 
-    chart
-      .style({
-        'width'   : width,
-        'height'  : containerHeight
-      });
-      // .style("width", width) 
-      // .style("height", height);
-
-
     // Update marks  TODO: only apply viewbox properties once. Split getting window props into seperate function
 
     if(renderCount == 0){
-      marks
+      marksView                                                         
         .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", "0 0 " + (width + margin.left + margin.right) + " " + (height + margin.top + margin.bottom))
-      gMarks
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        .attr("viewBox", "0 0 " + width + " " + height)
   
       var areas = series.append("path")
         .attr("class", "area")
