@@ -63,6 +63,10 @@ bs.stackedArea = function(el, data){
   });
   color.domain(names);
 
+  // Init range based on aspect ratio
+  x.range([0, 1000]);
+  y.range([1000 * aspectRatio, 0]);
+
   
   // DOM Scaffolding 
   var header = container.append("h6").classed("title", true)
@@ -83,13 +87,24 @@ bs.stackedArea = function(el, data){
 
   var marks = chart.append("svg").classed("marks", true);
 
+  
+  // Render marks
   var marksView = marks.append("svg")
-    .attr("class", "viewbox");
+    .attr("class", "viewbox")
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("viewBox", "0 0 " + 1000 + " " + 1000 * aspectRatio);
 
   var series = marksView.selectAll(".series")
     .data(data)
     .enter().append("g")
-    .attr("class", "series");
+    .attr("class", "series");                                                
+
+  var areas = series.append("path")
+    .attr("class", "area")
+    .attr("d", function(d) { 
+      return area(d.values); 
+    })
+    .style("fill", function(d) { return color(d.name); });       
 
 
   // Render legend
@@ -156,32 +171,36 @@ bs.stackedArea = function(el, data){
       .attr("dy", "1.25em")
       .style("text-anchor", "start"); 
 
-
-    // Update marks  TODO: only apply viewbox properties once. Split getting window props into seperate function
-
-    if(renderCount == 0){
-      marksView                                                         
-        .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", "0 0 " + width + " " + height)
-  
-      var areas = series.append("path")
-        .attr("class", "area")
-        .attr("d", function(d) { 
-          return area(d.values); 
-        })
-        .style("fill", function(d) { return color(d.name); });       
-
-    }
-    renderCount++;
-
-
     console.timeEnd("render");
   }
 
-  // Render and attach resize handler   TODO: debounce
-  var renderCount = 0;
+  // Render and attach throttled resize handler 
   render.call();
-  d3.select(window).on("resize", render);
+  d3.select(window).on("resize", throttle(render, 10));
+
+  // Via remy sharp
+  function throttle(fn, threshhold, scope) {
+    threshhold || (threshhold = 250);
+    var last,
+        deferTimer;
+    return function () {
+      var context = scope || this;
+
+      var now = +new Date,
+          args = arguments;
+      if (last && now < last + threshhold) {
+        // hold on to it
+        clearTimeout(deferTimer);
+        deferTimer = setTimeout(function () {
+          last = now;
+          fn.apply(context, args);
+        }, threshhold);
+      } else {
+        last = now;
+        fn.apply(context, args);
+      }
+    };
+  }
 
 };
 
